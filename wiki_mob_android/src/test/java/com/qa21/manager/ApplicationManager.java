@@ -1,18 +1,17 @@
+package com.qa21.manager;
+
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class OpenApplicationTest {
+public class ApplicationManager {
   private AppiumDriver driver;
 
-  @BeforeClass
-  public void setUp() throws MalformedURLException {
+  public void init() throws MalformedURLException {
     DesiredCapabilities capabilities = new DesiredCapabilities();
 
     capabilities.setCapability("platformName", "Android");
@@ -27,14 +26,29 @@ public class OpenApplicationTest {
     driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
   }
 
-  @Test
-  public  void  testApplicationStarted(){
-    System.out.println("Application opened");
-
+  public void pause(int time) throws InterruptedException {
+    Thread.sleep(time);
   }
 
-  @AfterClass
-  public  void tearDown(){
-driver.quit();
+  public void typeRequest(String text) {
+    type(By.id("search_container"), text);
+  }
+
+  public void type(By locator, String text) {
+    click(locator);
+    driver.findElement(locator).clear();
+    driver.findElement(locator).sendKeys(text);
+  }
+
+  public void startSearch() {
+    click(By.id("search_container"));
+  }
+
+  public void click(By locator) {
+    driver.findElement(locator).click();
+  }
+
+  public void stop() {
+    driver.quit();
   }
 }
