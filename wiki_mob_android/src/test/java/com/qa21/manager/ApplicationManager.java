@@ -10,6 +10,8 @@ import java.net.URL;
 
 public class ApplicationManager {
   private AppiumDriver driver;
+  ArticleHelper article;
+  SessoionHelper session;
 
   public void init() throws MalformedURLException {
     DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -24,31 +26,19 @@ public class ApplicationManager {
             "C:\\Users\\Elena\\Dropbox\\Tel-ran\\Mobile\\apk\\org.wikipedia.apk");
 
     driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-  }
 
-  public void pause(int time) throws InterruptedException {
-    Thread.sleep(time);
-  }
-
-  public void typeRequest(String text) {
-    type(By.id("search_container"), text);
-  }
-
-  public void type(By locator, String text) {
-    click(locator);
-    driver.findElement(locator).clear();
-    driver.findElement(locator).sendKeys(text);
-  }
-
-  public void startSearch() {
-    click(By.id("search_container"));
-  }
-
-  public void click(By locator) {
-    driver.findElement(locator).click();
+    session = new SessoionHelper(driver);
+    article = new ArticleHelper(driver);
   }
 
   public void stop() {
     driver.quit();
+  }
+
+  public ArticleHelper getArticle() {
+    return article;
+  }
+  public SessoionHelper getSession() {
+    return session;
   }
 }
